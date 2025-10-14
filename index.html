@@ -4,24 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Aniversário, Meu Amor!</title>
-    
     <link rel="stylesheet" href="style.css">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <audio id="backgroundMusicPlayer" src="audios/musica.mp3"></audio>
-    <div id="music-loader" style="display: none;">Carregando música...</div>
-    
-    <section id="welcome">
+
+    <section id="welcome" class="active">
         <div class="content-wrapper">
             <h1>Feliz aniversário, Minha Princesa ❤️</h1>
             <button id="startButton">Clique para uma surpresa</button>
         </div>
     </section>
-    
+
+    <section id="reasons" class="hidden">
+        <div class="content-wrapper">
+            <h2>Coisinhas que eu admiro em você...❤️</h2>
+            <ul>
+                <li>O seu Coraçãozinho.</li>
+                <li>A sua Bondade.</li>
+                <li>O quanto você é fofinha com todo mundo.</li>
+                <li>A sua inteligênciaaaa.</li>
+                <li>A sua felicidadeeeee.🤩 </li>
+                <li>O seu cuidado com as pessoas que você amaaaa.</li>
+                <li>A sua belezaaaa.😍</li>
+            </ul>
+            <button id="showPhotosButton">OLHAAAAA ISSO AMORRRRRRRRR</button>
+        </div>
+    </section>
+
+    <section id="photos" class="hidden">
+        <div class="content-wrapper">
+            <h2>OLHAA Q MULHERRRRRR LINDAAA 😍 </h2>
+            <div class="gallery">
+                <img src="imagens/foto1.jpg" alt="Foto da Aninha">
+                <img src="imagens/foto2.jpg" alt="Foto da Aninha">
+                <img src="imagens/foto3.jpg" alt="Foto da Aninha">
+                <img src="imagens/foto4.jpg" alt="Foto da Aninha">
+                <img src="imagens/foto5.jpg" alt="Foto da Aninha">
+            </div>
+            <button id="showLetterButton">E tem um textinho pra você...</button>
+        </div>
+    </section>
+
+    <section id="letter" class="hidden">
+        <div class="content-wrapper">
+            <h2>Um textinho para você meu amoooor:</h2>
+            <div class="letter-content">
+                <p>Minha Princesa linda,</p>
+                <p>hoje é o SEU dia! 🥰 O dia da pessoa mais incrível do mundo, que não só ilumina a minha vida, mas também a de todo mundo que tem a sorte de te conhecer. Que seu aniversário seja cheio de momentos mágicos, risadas e muito amor, porque você merece tudo de mais lindo que existe. Eu me apaixono cada dia mais pelo seu jeitinho doce, seu sorriso e seu coração enorme. EU TE AMO MUITO! Feliz aniversário, meu amor! 🥳❤️💖</p>
+                <p><strong>Com todo amor, Seu Gatinho.</strong></p>
+            </div>
+            <button id="playAudioButton">Aperte aqui para o toque final... 🔊</button>
+        </div>
+    </section>
+
     <script src="script.js"></script>
 </body>
 </html>
