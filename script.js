@@ -37,9 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Música bloqueada, aguardando interação: ", e); 
             alert("Amor, Toque novamente se o som não iniciarrr"); 
        }
+    
 
        showSection('reasons');
        createFallingHearts();
+    
+
+    });
 });
 
 function createFallingHearts() {
@@ -62,4 +66,4 @@ function createFallingHearts() {
         setTimeout(() => { heart.remove(); }, 10000);
     }, 800);
 
-}
+};
