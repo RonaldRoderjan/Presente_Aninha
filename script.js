@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let currentMusic = null; // referência da música de fundo
+    let currentMusic = null;
     const voiceMessage = new Audio('audios/audio.niver.mp3');
 
     const sections = {
@@ -28,69 +28,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Música principal (corrigido para mobile) ---
+    // --- Música principal ---
     buttons.start.addEventListener('click', async () => {
         try {
-            // Cria o áudio dentro do clique (mobile safe)
             currentMusic = new Audio('audios/musica.mp3');
             currentMusic.volume = 0.8;
-            currentMusic.loop = true; // deixa a música de fundo contínua
+            currentMusic.loop = true;
 
-            const playPromise = currentMusic.play();
-            if (playPromise !== undefined) {
-                await playPromise;
-                console.log("🎶 Música tocando!");
-            }
+            await currentMusic.play();
+            console.log("🎶 Música tocando!");
         } catch (e) {
             console.warn("🔇 Reprodução bloqueada:", e);
-            alert("Se o som não tocar, toque novamente ❤️");
+            alert("Se a música não tocar, toque novamente ❤️");
         }
 
         showSection('reasons');
         createFallingHearts();
     });
 
-    // --- Troca de seções ---
-    buttons.showPhotos.addEventListener('click', () => {
-        showSection('photos');
-    });
+    // --- Navegação entre seções ---
+    buttons.showPhotos.addEventListener('click', () => showSection('photos'));
+    buttons.showLetter.addEventListener('click', () => showSection('letter'));
 
-    buttons.showLetter.addEventListener('click', () => {
-        showSection('letter');
-    });
-
-    // --- Toque final (voz) ---
+    // --- Toque final ---
     buttons.playAudio.addEventListener('click', async () => {
         try {
-            // Pausa a música de fundo, se estiver tocando
+            // Pausa música de fundo se estiver tocando
             if (currentMusic && !currentMusic.paused) {
                 currentMusic.pause();
             }
 
-            // Reproduz a mensagem de voz
+            // Toca mensagem de voz
             voiceMessage.currentTime = 0;
             await voiceMessage.play();
 
             buttons.playAudio.textContent = "Ouvindo...";
             buttons.playAudio.disabled = true;
 
-            // Quando terminar, volta a música de fundo
+            // Quando o áudio termina
             voiceMessage.onended = () => {
-                buttons.playAudio.textContent = "Reproduzir novamente 🔊";
+                buttons.playAudio.textContent = "Tocar música novamente 🎵";
                 buttons.playAudio.disabled = false;
-                if (currentMusic) {
-                    currentMusic.play();
-                }
-            };
 
+                // Cria uma nova interação segura no clique
+                buttons.playAudio.onclick = async () => {
+                    try {
+                        // Cria um novo player (requerido para iOS)
+                        currentMusic = new Audio('audios/musica.mp3');
+                        currentMusic.volume = 0.8;
+                        currentMusic.loop = true;
+                        await currentMusic.play();
+                        console.log("🎵 Música retomada!");
+                        buttons.playAudio.textContent = "A música voltou 💖";
+                        buttons.playAudio.disabled = true;
+                    } catch (err) {
+                        alert("Toque novamente se a música não iniciar ❤️");
+                        console.error(err);
+                    }
+                };
+            };
         } catch (e) {
-            console.error("Erro ao tocar a mensagem de voz:", e);
+            console.error("Erro ao tocar mensagem de voz:", e);
             alert("Toque novamente se o áudio não iniciar 🔊");
         }
     });
 });
 
-// --- Efeitos visuais (corações caindo) ---
+// --- Corações caindo ---
 function createFallingHearts() {
     if (document.body.dataset.heartsStarted) return;
     document.body.dataset.heartsStarted = "true";
