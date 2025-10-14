@@ -28,23 +28,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Música principal ---
-    buttons.start.addEventListener('click', async () => {
-        try {
-            currentMusic = new Audio('audios/musica.MP3');
-            currentMusic.volume = 0.8;
-            currentMusic.loop = true;
-
-            await currentMusic.play();
-            console.log("🎶 Música tocando!");
-        } catch (e) {
-            console.warn("🔇 Reprodução bloqueada:", e);
-            alert("Se a música não tocar, toque novamente ❤️");
+   buttons.start.addEventListener('click', async () => {
+    try {
+        // Garante que o áudio seja sempre criado dentro do clique (requerido por iOS e PWA)
+        if (currentMusic) {
+            try { currentMusic.pause(); } catch {}
         }
 
-        showSection('reasons');
-        createFallingHearts();
-    });
+        currentMusic = new Audio('audios/musica.mp3');
+        currentMusic.volume = 0.8;
+        currentMusic.loop = true;
+
+        // força preload manual pra Safari standalone
+        currentMusic.load();
+
+        const playPromise = currentMusic.play();
+
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => console.log("🎵 Música tocando normalmente"))
+                .catch(err => {
+                    console.warn("⚠️ Safari bloqueou a reprodução:", err);
+                    alert("Se a música não tocar, toque novamente ❤️");
+                });
+        }
+    } catch (e) {
+        console.error("Erro ao iniciar música:", e);
+        alert("Toque novamente se o som não iniciar ❤️");
+    }
+
+    showSection('reasons');
+    createFallingHearts();
+});
 
     // --- Navegação entre seções ---
     buttons.showPhotos.addEventListener('click', () => showSection('photos'));
