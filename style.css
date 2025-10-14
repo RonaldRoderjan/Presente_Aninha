@@ -53,14 +53,14 @@ section.hidden {
     background: rgba(255, 255, 255, 0.95);
     padding: 45px 30px;
     border-radius: 25px;
-    box-shadow: 0 10px 40px rgba(255, 120, 150, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     max-width: 480px;
     width: 100%;
     animation: fadeInContent 1s ease;
 }
 
 /* --- Títulos --- */
-h1, h2 {
+h1, h2, h3 {
     font-family: 'Playfair Display', serif;
     color: #e63e6d;
     font-weight: 700;

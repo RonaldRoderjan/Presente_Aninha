@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const backgroundMusic = document.getElementById('backgroundMusicPlayer');
+    let currentMusic = null; // referência da música de fundo
     const voiceMessage = new Audio('audios/audio.niver.mp3');
 
     const sections = {
@@ -28,48 +28,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Correção principal: reprodução garantida em celular ---
+    // --- Música principal (corrigido para mobile) ---
     buttons.start.addEventListener('click', async () => {
         try {
-            const bgMusic = new Audio('audios/musica.MP3');
-            bgMusic.volume = 0.8;
+            // Cria o áudio dentro do clique (mobile safe)
+            currentMusic = new Audio('audios/musica.mp3');
+            currentMusic.volume = 0.8;
+            currentMusic.loop = true; // deixa a música de fundo contínua
 
-            const playPromise = bgMusic.play();
-
+            const playPromise = currentMusic.play();
             if (playPromise !== undefined) {
                 await playPromise;
-                console.log("Musica tocando!");
+                console.log("🎶 Música tocando!");
             }
-
-            window.currentMusic = bgMusic;
-
         } catch (e) {
-            console.warn("⚠️ Reprodução bloqueada, aguardando segunda tentativa:", e);
-            alert("Toque novamente se o sol não iniciar ❤️");
+            console.warn("🔇 Reprodução bloqueada:", e);
+            alert("Se o som não tocar, toque novamente ❤️");
         }
 
         showSection('reasons');
         createFallingHearts();
     });
 
-    // Mostra as fotos
+    // --- Troca de seções ---
     buttons.showPhotos.addEventListener('click', () => {
         showSection('photos');
     });
 
-    // Mostra a carta
     buttons.showLetter.addEventListener('click', () => {
         showSection('letter');
     });
 
-    // Toca a mensagem de voz final
+    // --- Toque final (voz) ---
     buttons.playAudio.addEventListener('click', async () => {
         try {
-            backgroundMusic.pause();
+            // Pausa a música de fundo, se estiver tocando
+            if (currentMusic && !currentMusic.paused) {
+                currentMusic.pause();
+            }
+
+            // Reproduz a mensagem de voz
             voiceMessage.currentTime = 0;
             await voiceMessage.play();
+
             buttons.playAudio.textContent = "Ouvindo...";
             buttons.playAudio.disabled = true;
+
+            // Quando terminar, volta a música de fundo
+            voiceMessage.onended = () => {
+                buttons.playAudio.textContent = "Reproduzir novamente 🔊";
+                buttons.playAudio.disabled = false;
+                if (currentMusic) {
+                    currentMusic.play();
+                }
+            };
+
         } catch (e) {
             console.error("Erro ao tocar a mensagem de voz:", e);
             alert("Toque novamente se o áudio não iniciar 🔊");
