@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Música principal ---
     buttons.start.addEventListener('click', async () => {
         try {
-            currentMusic = new Audio('audios/musica.mp3');
+            currentMusic = new Audio('audios/musica.MP3');
             currentMusic.volume = 0.8;
             currentMusic.loop = true;
 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 buttons.playAudio.onclick = async () => {
                     try {
                         // Cria um novo player (requerido para iOS)
-                        currentMusic = new Audio('audios/musica.mp3');
+                        currentMusic = new Audio('audios/musica.MP3');
                         currentMusic.volume = 0.8;
                         currentMusic.loop = true;
                         await currentMusic.play();
