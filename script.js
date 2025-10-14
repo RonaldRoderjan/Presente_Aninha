@@ -28,30 +28,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Correção principal: reprodução garantida em celular ---
     buttons.start.addEventListener('click', async () => {
-       try {
-            backgroundMusic.src = 'audio/musica.mp3';
+        try {
+            // Define o áudio somente no clique (interação direta)
+            backgroundMusic.src = 'audios/musica.mp3';
+            backgroundMusic.volume = 0.8; // volume mais suave
             await backgroundMusic.play();
-            console.log("Música tocando!");
-       } catch (e) {
-            console.log("Música bloqueada, aguardando interação: ", e); 
-            alert("Amor, Toque novamente se o som não iniciarrr"); 
-       }
-    
+            console.log("🎵 Música iniciada com sucesso!");
+        } catch (e) {
+            console.warn("⚠️ Reprodução bloqueada, aguardando segunda tentativa:", e);
+            alert("Se a música não tocar, toque no botão novamente ❤️");
+        }
 
-       showSection('reasons');
-       createFallingHearts();
-    
+        showSection('reasons');
+        createFallingHearts();
+    });
 
+    // Mostra as fotos
+    buttons.showPhotos.addEventListener('click', () => {
+        showSection('photos');
+    });
+
+    // Mostra a carta
+    buttons.showLetter.addEventListener('click', () => {
+        showSection('letter');
+    });
+
+    // Toca a mensagem de voz final
+    buttons.playAudio.addEventListener('click', async () => {
+        try {
+            backgroundMusic.pause();
+            voiceMessage.currentTime = 0;
+            await voiceMessage.play();
+            buttons.playAudio.textContent = "Ouvindo...";
+            buttons.playAudio.disabled = true;
+        } catch (e) {
+            console.error("Erro ao tocar a mensagem de voz:", e);
+            alert("Toque novamente se o áudio não iniciar 🔊");
+        }
     });
 });
 
+// --- Efeitos visuais (corações caindo) ---
 function createFallingHearts() {
     if (document.body.dataset.heartsStarted) return;
     document.body.dataset.heartsStarted = "true";
+
     const styleSheet = document.createElement("style");
-    styleSheet.innerText = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }`;
+    styleSheet.innerText = `@keyframes fall { 
+        to { transform: translateY(110vh) rotate(360deg); opacity: 0; } 
+    }`;
     document.head.appendChild(styleSheet);
+
     setInterval(() => {
         const heart = document.createElement('div');
         heart.innerText = '❤️';
@@ -65,5 +94,4 @@ function createFallingHearts() {
         document.body.appendChild(heart);
         setTimeout(() => { heart.remove(); }, 10000);
     }, 800);
-
-};
+}
