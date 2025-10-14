@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try { currentMusic.pause(); } catch {}
         }
 
-        currentMusic = new Audio('audios/musica.mp3');
+        currentMusic = new Audio('audios/musica.MP3');
         currentMusic.volume = 0.8;
         currentMusic.loop = true;
 
