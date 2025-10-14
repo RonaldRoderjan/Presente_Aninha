@@ -31,11 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Correção principal: reprodução garantida em celular ---
     buttons.start.addEventListener('click', async () => {
         try {
-            // Define o áudio somente no clique (interação direta)
-            backgroundMusic.src = 'audios/musica.mp3';
-            backgroundMusic.volume = 0.8; // volume mais suave
-            await backgroundMusic.play();
-            console.log("🎵 Música iniciada com sucesso!");
+            backgroundMusic.load();
+            backgroundMusic.currentTime = 0;
+            backgroundMusic.volume = 0.8;
+            
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => console.log("Música começou!"))
+                    .catch((e) => {
+                        console.warn("Bloqueado na primeira tentativa: ", e);
+                        alert("Se o som não tocar, toque novamente"); 
+                    })
+            }
+            
         } catch (e) {
             console.warn("⚠️ Reprodução bloqueada, aguardando segunda tentativa:", e);
             alert("Se a música não tocar, toque no botão novamente ❤️");
